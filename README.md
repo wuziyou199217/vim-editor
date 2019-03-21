@@ -129,6 +129,9 @@
   - snor <c-j> <esc>i<right><c-r>=snipMate#TriggerSnippet()<cr>
 
 * [surround.vim]       :  Plugin which provides mappings to easily delete, change and add surrounds in pairs
+
+  - cs **old symbol** **new symbol**
+
 * [syntastic.vim]      :  Syntax checking hacks for Vim
 
   - let g:syntastic_always_populate_loc_list = 1

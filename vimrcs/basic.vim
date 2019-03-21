@@ -194,12 +194,12 @@ cno <leader>j e ./
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/':'%%'
 
 " Map auto complete of (, ", ', [
-inoremap $1 ()<esc>i
-inoremap $2 []<esc>i
-inoremap $3 {}<esc>i
-inoremap $4 {<esc>o}<esc>O
-inoremap $q ''<esc>i
-inoremap $e ""<esc>i
+inoremap <leader>1 ()<esc>i
+inoremap <leader>2 []<esc>i
+inoremap <leader>3 {}<esc>i
+inoremap <leader>4 {<esc>o}<esc>O
+inoremap <leader>q ''<esc>i
+inoremap <leader>e ""<esc>i
 iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
