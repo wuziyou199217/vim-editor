@@ -116,7 +116,6 @@
   - map <leader>nb :NERDTreeFromBookmark<Space>
   - map <leader>nf :NERDTreeFind<cr>
 
-* [python-mode.vim]    :  Python IDE for Vim
 * [solarized.vim]      :  Vim Solarized Color Scheme
 
   - colorscheme solarized
