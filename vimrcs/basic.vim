@@ -183,13 +183,7 @@ noremap <F2> mzgg=G`z
 " Super useful! From an idea by Michael Naumann
 vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
-" Select a line from start to last in visual model wherever your cursor is 
-xnoremap sl ^o$
 
-" Smart mappings on the command line
-cno <leader>h e ~/
-cno <leader>d e ~/Desktop/
-cno <leader>j e ./
 " => Quck Mapping of %:h to %% 
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/':'%%'
 
