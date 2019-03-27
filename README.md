@@ -152,6 +152,7 @@
 
   - nmap tt :TagbarToggle<CR>
 
+* [vimtex.vim]         :  Vim plugin for Latex support 
 * [yankstack.vim]      :  Maintains a history of previous yanks, changes and deletes
 
   - let g:yankstack_yank_keys = ['y', 'd']
