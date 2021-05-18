@@ -89,6 +89,10 @@ let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_go_checkers = ['go', 'golint', 'errcheck']
 
+let g:syntastic_quiet_messages = {
+        \ "!level": "errors", 
+        \ "regex": '\mpossible unwanted space at "{"' }
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Tagbar 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
