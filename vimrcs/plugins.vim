@@ -68,6 +68,8 @@ map <leader>nf :NERDTreeFind<cr>
 ino <c-j> <c-r>=snipMate#TriggerSnippet()<cr>
 snor <c-j> <esc>i<right><c-r>=snipMate#TriggerSnippet()<cr>
 
+" Personal Snippets defined in ~/.vim/bundle/vim-snippets/snippets/<file>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Syntastic (syntax checker)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -113,9 +115,10 @@ nmap tt :TagbarToggle<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Solarized Colorscheme 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-colorscheme solarized
+set t_Co=256
 let g:solarized_termcolors=256
 set background=light
+colorscheme solarized
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Commentary
