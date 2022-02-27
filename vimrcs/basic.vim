@@ -113,6 +113,9 @@ set laststatus=2
 " Always show the tablilne 
 set stal=2
 
+" Ctags
+set tags=./.tags;,.tags
+
 " Return to last edit position when opening files (You want this!)
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 

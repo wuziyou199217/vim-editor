@@ -98,7 +98,7 @@ let g:syntastic_quiet_messages = {
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Tagbar 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nmap tt :TagbarToggle<CR>
+" nmap tt :TagbarToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Abolish
@@ -183,3 +183,78 @@ let g:markdown_minlines = 100
 """"""""""""""""""""""""""""""
 let g:yankstack_yank_keys = ['y', 'd']
 nmap <c-p> <Plug>yankstack_substitute_older_paste
+
+""""""""""""""""""""""""""""""
+" => vim-gutentags
+""""""""""""""""""""""""""""""
+" gutentags 搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归
+let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+
+" 所生成的数据文件的名称
+let g:gutentags_ctags_tagfile = '.tags'
+
+" 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
+let s:vim_tags = expand('~/.cache/tags')
+let g:gutentags_cache_dir = s:vim_tags
+
+" 配置 ctags 的参数
+let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+
+" 检测 ~/.cache/tags 不存在就新建
+if !isdirectory(s:vim_tags)
+   silent! call mkdir(s:vim_tags, 'p')
+endif
+
+""""""""""""""""""""""""""""""
+" => asyncrun.vim
+""""""""""""""""""""""""""""""
+" 自动打开 quickfix window ，高度为 6
+let g:asyncrun_open = 6
+
+" 任务结束时候响铃提醒
+let g:asyncrun_bell = 1
+
+" 设定项目目录标记
+let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml']
+
+" 设置 F10 打开/关闭 Quickfix 窗口
+nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
+
+" 编译单个文件
+nnoremap <silent> <F9> :AsyncRun gcc -Wall -O2 "$(VIM_FILEPATH)" -o "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+
+" 运行编译好的当前文件
+nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+
+" 编译整个项目
+nnoremap <silent> <F7> :AsyncRun -cwd=<root> make <cr>
+
+" 运行当前项目
+nnoremap <silent> <F8> :AsyncRun -cwd=<root> -raw make run <cr>
+
+" 执行测试
+nnoremap <silent> <F6> :AsyncRun -cwd=<root> -raw make test <cr>
+
+" 使用 cmake 更新 Makefile 文件
+nnoremap <silent> <F4> :AsyncRun -cwd=<root> cmake . <cr>
+
+""""""""""""""""""""""""""""""
+" => Asynchronous Lint Engine (ALE)
+""""""""""""""""""""""""""""""
+let g:ale_linters_explicit = 1
+let g:ale_completion_delay = 500
+let g:ale_echo_delay = 20
+let g:ale_lint_delay = 500
+let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
+let g:airline#extensions#ale#enabled = 1
+
+let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++11'
+let g:ale_c_cppcheck_options = ''
+let g:ale_cpp_cppcheck_options = ''
+
+let g:ale_sign_error = "\ue009\ue009"
