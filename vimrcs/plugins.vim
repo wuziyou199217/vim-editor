@@ -6,40 +6,36 @@ call pathogen#infect(s:vim_runtime.'/bundle/{}')
 call pathogen#helptags()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => lightline
+" => vim-airline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:lightline = {
-            \ 'colorscheme': 'powerline',
-            \ 'active': {
-            \   'left': [ ['mode', 'paste'],
-            \             ['fugitive', 'readonly', 'filename', 'modified'] ],
-            \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'] ]
-            \ },
-            \ 'component_expand': {
-            \   'syntastic': 'SyntasticStatuslineFlag',
-            \ },
-            \ 'component_type': {
-            \   'syntastic': 'error',
-            \ },
-            \ 'component': {
-            \   'readonly': '%{&filetype=="help"?"":&readonly?"🔒":""}',
-            \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-            \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
-            \ },
-            \ 'component_visible_condition': {
-            \   'readonly': '(&filetype!="help"&& &readonly)',
-            \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-            \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
-            \ },
-            \ 'separator': { 'left': ' ', 'right': ' ' },
-            \ 'subseparator': { 'left': ' ', 'right': ' ' }
-            \ }
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#formatter = 'default'
+let g:airline#extensions#ale#enabled = 1
+let g:airline_theme='powerlineish'
 
 """"""""""""""""""""""""""""""
-" => MRU plugin
+" => LeaderF
 """"""""""""""""""""""""""""""
-let MRU_Max_Entries = 400
-map <leader>f :MRU<CR>
+noremap <leader>fi  :LeaderfFile<cr>
+noremap <leader>fu :LeaderfFunction<cr>
+noremap <leader>fm :LeaderfMru<cr>
+noremap <leader>ft :LeaderfTag<cr>
+noremap <leader>fl :LeaderfLine<cr>
+noremap <leader>fb :LeaderfBuffer<cr>
+noremap <leader>fbt :LeaderfBufTag<cr>
+
+let g:Lf_HideHelp = 1
+let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']
+let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
+let g:Lf_WindowHeight = 0.30
+let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
+let g:Lf_StlColorscheme = 'powerline'
+let g:Lf_CacheDirectory = expand('/tmp/.vim/cache')
+let g:Lf_ShowRelativePath = 0
+let g:Lf_WorkingDirectoryMode = 'Ac'
+let g:Lf_IgnoreCurrentBufferName = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Nerd Tree
@@ -53,42 +49,43 @@ map <leader>nb :NERDTreeFromBookmark<Space>
 map <leader>nf :NERDTreeFind<cr>
 
 """"""""""""""""""""""""""""""
-" => snipMate (beside <TAB> support <CTRL-j>)
+" => ultisnips (beside <TAB> support <CTRL-j>)
 """"""""""""""""""""""""""""""
-ino <c-j> <c-r>=snipMate#TriggerSnippet()<cr>
-snor <c-j> <esc>i<right><c-r>=snipMate#TriggerSnippet()<cr>
+let g:UltiSnipsExpandTrigger='<c-j>'
+let g:UltiSnipsJumpForwardTrigger='<c-b>'
+let g:UltiSnipsJumpBackwardTrigger='<c-z>'
 
-" Personal Snippets defined in ~/.vim/bundle/vim-snippets/snippets/<file>
+""""""""""""""""""""""""""""""
+" => Asynchronous Lint Engine (ALE)
+""""""""""""""""""""""""""""""
+let g:ale_linters_explicit = 1
+let g:ale_completion_delay = 500
+let g:ale_echo_delay = 20
+let g:ale_lint_delay = 500
+let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter = 0
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Syntastic (syntax checker)
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+let g:ale_linters = {
+      \ 'python': ['pylint']
+      \}
+let g:ale_fixers = {
+      \ 'python': ['autopep8', 'yapf', 'autoimport', 'isort']
+      \}
+let g:ale_warn_about_trailing_whitespace = 0
+" let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+" let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
+" let g:ale_python_pylint_options = ''
 
-" C++
-let g:syntastic_cpp_checkers=['cppcheck']
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '--'
+hi! clear SpellBad
+hi! clear SpellCap
+hi! clear SpellRare
 
-" Python
-let g:syntastic_python_checkers=['pyflakes']
-
-" Javascript
-let g:syntastic_javascript_checkers = ['jshint']
-
-" Go
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_go_checkers = ['go', 'golint', 'errcheck']
-
-let g:syntastic_quiet_messages = {
-        \ "!level": "errors", 
-        \ "regex": '\mpossible unwanted space at "{"' }
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Tagbar 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" nmap tt :TagbarToggle<CR>
+nmap <silent> <C-a>k <Plug>(ale_previous_wrap)
+nmap <silent> <C-a>j <Plug>(ale_next_wrap)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Abolish
@@ -103,12 +100,10 @@ let g:syntastic_quiet_messages = {
 " Title Case (`crt`)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Solarized Colorscheme 
+" => awesome-vim-colorschemes
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set t_Co=256
-let g:solarized_termcolors=256
-set background=light
-colorscheme solarized
+colorscheme minimalist
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Commentary
@@ -152,15 +147,9 @@ map K <Plug>(expand_region_expand)
 map J <plug>(expand_region_shrink)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Git gutter (Git diff)
+" => vim-signify
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:gitgutter_enabled=0
-let g:gitgutter_sign_added = '+'
-let g:gitgutter_sign_modified = 'M'
-let g:gitgutter_sign_removed = '-'
-let g:gitgutter_sign_removed_first_line = '-^'
-let g:gitgutter_sign_modified_removed = 'M-'
-nnoremap <silent> <leader>d :GitGutterToggle<cr>
+set updatetime=100
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vim-markdown
@@ -183,8 +172,12 @@ let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = '.tags'
 
-" 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
-let s:vim_tags = expand('~/.cache/tags')
+" 将自动生成的 tags 文件全部放入 /root/.cache/tags 目录中，避免污染工程目录
+let s:vim_tags = '/root/.cache/tags'
+" 检测 /root/.cache/tags 不存在就新建
+if !isdirectory(s:vim_tags)
+   silent! call mkdir(s:vim_tags, 'p')
+endif
 let g:gutentags_cache_dir = s:vim_tags
 
 " 配置 ctags 的参数
@@ -192,10 +185,6 @@ let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
 let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
 let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
 
-" 检测 ~/.cache/tags 不存在就新建
-if !isdirectory(s:vim_tags)
-   silent! call mkdir(s:vim_tags, 'p')
-endif
 
 """"""""""""""""""""""""""""""
 " => asyncrun.vim
@@ -229,22 +218,3 @@ nnoremap <silent> <F6> :AsyncRun -cwd=<root> -raw make test <cr>
 
 " 使用 cmake 更新 Makefile 文件
 nnoremap <silent> <F4> :AsyncRun -cwd=<root> cmake . <cr>
-
-""""""""""""""""""""""""""""""
-" => Asynchronous Lint Engine (ALE)
-""""""""""""""""""""""""""""""
-let g:ale_linters_explicit = 1
-let g:ale_completion_delay = 500
-let g:ale_echo_delay = 20
-let g:ale_lint_delay = 500
-let g:ale_echo_msg_format = '[%linter%] %code: %%s'
-let g:ale_lint_on_text_changed = 'normal'
-let g:ale_lint_on_insert_leave = 1
-let g:airline#extensions#ale#enabled = 1
-
-let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
-let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++11'
-let g:ale_c_cppcheck_options = ''
-let g:ale_cpp_cppcheck_options = ''
-
-let g:ale_sign_error = "\ue009\ue009"
